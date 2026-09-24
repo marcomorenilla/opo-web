@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/node": "^11.1.6",
+    "@iconify-json/mdi": "^1.2.3",
     "@supabase/supabase-js": "^2.117.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.4",

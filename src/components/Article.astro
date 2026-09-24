@@ -1,0 +1,65 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  title: string;
+  content: string[];
+}
+const { title, content }: Props = Astro.props;
+---
+
+<article
+  class="m-5 flex flex-col justify-between bg-white w-200 rounded-xl shadow-xl">
+  <header class="px-2 border-b-2 border-slate-400">
+    <h2 class="text-center">{title}</h2>
+  </header>
+  <div class="flex px-2 justify-between items-center h-80">
+    <button
+      data-prev
+      class="bg-slate-800 text-white rounded-full font-bold p-2 hover:scale-105 cursor-pointer">
+      <Icon name="mdi:arrow-left" />
+    </button>
+    <p data-content={content} class=""></p>
+    <button
+      data-next
+      class="bg-slate-800 text-white rounded-full font-bold p-2 hover:scale-105 cursor-pointer">
+      <Icon name="mdi:arrow-right" />
+    </button>
+  </div>
+  <footer class="border-t-2 border-slate-400 flex justify-center gap-2 py-2">
+    <span
+      class="text-center text-sm font-bold bg-yellow-500 rounded-full p-2 text-white"
+      >Capítulo</span
+    >
+    <span
+      class="text-center text-sm font-bold bg-yellow-500 rounded-full p-2 text-white"
+      >Sección</span
+    >
+  </footer>
+  <script>
+    const paragraph = document.querySelector<HTMLElement>("[data-content]")!;
+    const prevButton =
+      document.querySelector<HTMLButtonElement>("[data-prev]")!;
+    const nextButton =
+      document.querySelector<HTMLButtonElement>("[data-next]")!;
+    const content: string[] = paragraph.dataset.content!.split(",");
+
+    let index: number = 0;
+
+    paragraph.textContent = content[index];
+
+    prevButton.addEventListener("click", () => {
+      if (index > 0) {
+        index--;
+      }
+      paragraph.textContent = content[index];
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (index < content.length - 1) {
+        index++;
+      }
+      paragraph.textContent = content[index];
+    });
+  </script>
+</article>

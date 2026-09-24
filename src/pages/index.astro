@@ -1,5 +1,15 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import Article from "@components/Article.astro";
 ---
 
-<Layout />
+<Layout>
+  <Article
+    title="Título del artículo"
+    content={[
+      "Contenido del artículo 1",
+      "Contenido del artículo 2",
+      "Contenido del artículo 3",
+    ]}
+  />
+</Layout>

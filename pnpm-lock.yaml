@@ -11,6 +11,9 @@ importers:
       '@astrojs/node':
         specifier: ^11.1.6
         version: 11.1.6(astro@7.3.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(jiti@2.7.0))
+      '@iconify-json/mdi':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@supabase/supabase-js':
         specifier: ^2.117.0
         version: 2.117.0
@@ -374,6 +377,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@iconify-json/mdi@1.2.3':
+    resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
 
   '@iconify/tools@5.0.14':
     resolution: {integrity: sha512-wJ4ZE3/HZh2iBqLwG+8FOMHe7CMJAJqwSXZSpPwMdj1gZM3Z4t2hbQMVw4Vm45oQ985qn0g89PUIcDEdKTheBA==}
@@ -2034,6 +2040,10 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.2':
     optional: true
+
+  '@iconify-json/mdi@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/tools@5.0.14':
     dependencies:
