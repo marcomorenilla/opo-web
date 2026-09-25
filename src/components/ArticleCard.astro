@@ -17,13 +17,18 @@ const { title, content, infoArticle }: Props = Astro.props;
   <div class="flex px-2 justify-between items-center">
     <button
       data-prev
-      class="bg-slate-800 text-white rounded-full font-bold p-2 hover:scale-105 cursor-pointer">
+      disabled
+      class="bg-slate-800 text-white rounded-full font-bold p-2
+             hover:scale-105 cursor-pointer
+             disabled:opacity-0 disabled:pointer-events-none">
       <Icon name="mdi:arrow-left" />
     </button>
     <p data-content={JSON.stringify(content)} class="px-4"></p>
     <button
       data-next
-      class="bg-slate-800 text-white rounded-full font-bold p-2 hover:scale-105 cursor-pointer">
+      class="bg-slate-800 text-white rounded-full font-bold p-2
+             hover:scale-105 cursor-pointer
+             disabled:opacity-0 disabled:pointer-events-none">
       <Icon name="mdi:arrow-right" />
     </button>
   </div>
@@ -58,26 +63,62 @@ const { title, content, infoArticle }: Props = Astro.props;
     const nextButton =
       document.querySelector<HTMLButtonElement>("[data-next]")!;
 
-    const content = paragraph.dataset.content
+    const content: string[] = paragraph.dataset.content
       ? JSON.parse(paragraph.dataset.content)
       : [];
 
-    let index: number = 0;
+    let index = 0;
 
-    paragraph.textContent = content[index];
+    function updateView() {
+      const hasContent = content.length > 0;
+
+      paragraph.textContent = hasContent ? content[index] : "";
+
+      updateButton(prevButton, !hasContent || index === 0);
+      updateButton(nextButton, !hasContent || index === content.length - 1);
+    }
+
+    function updateButton(button: HTMLButtonElement, shouldDisable: boolean) {
+      if (button.disabled === shouldDisable) return;
+
+      button.disabled = false;
+      button.classList.remove("animate-visibility", "animate-visibility-out");
+
+      // Reinicia la animación aunque se aplique varias veces.
+      void button.offsetWidth;
+
+      const animationClass = shouldDisable
+        ? "animate-visibility-out"
+        : "animate-visibility";
+
+      button.classList.add(animationClass);
+
+      button.addEventListener(
+        "animationend",
+        () => {
+          button.disabled = shouldDisable;
+          button.classList.remove(animationClass);
+        },
+        { once: true },
+      );
+    }
 
     prevButton.addEventListener("click", () => {
-      if (index > 0) {
-        index--;
-      }
-      paragraph.textContent = content[index];
+      if (index === 0) return;
+
+      index--;
+      updateView();
+      updateButton(prevButton, true);
     });
 
     nextButton.addEventListener("click", () => {
-      if (index < content.length - 1) {
-        index++;
-      }
-      paragraph.textContent = content[index];
+      if (index >= content.length - 1) return;
+
+      index++;
+      updateView();
+      updateButton(nextButton, true);
     });
+
+    updateView();
   </script>
 </article>
