@@ -1,15 +1,41 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Article from "@components/Article.astro";
+import ArticleCard from "@components/ArticleCard.astro";
+import { XMLParser } from "fast-xml-parser";
+import { obtenerEstructuraArticulo } from "../utils/apiUtils";
+
+const parser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: "",
+});
+const num = Math.round(Math.random() * 169);
+
+const articleResponse = await fetch(
+  `https://boe.es/datosabiertos/api/legislacion-consolidada/id/BOE-A-1978-31229/texto/bloque/a${num}`,
+  {
+    headers: {
+      Accept: "application/xml",
+    },
+  },
+);
+
+const infoArticle: any = obtenerEstructuraArticulo(num);
+const bloque = await articleResponse.text();
+
+const parsedBloque = parser.parse(bloque);
+const bloqueData = parsedBloque.response.data.bloque;
+const textContent = bloqueData.version.p
+  ? bloqueData.version.p
+  : bloqueData.version[0].p;
+const filteredContent = textContent
+  .filter((bloque: any) => bloque.class == "parrafo")
+  .map((bloque: any) => bloque["#text"]);
 ---
 
 <Layout>
-  <Article
-    title="Título del artículo"
-    content={[
-      "Contenido del artículo 1",
-      "Contenido del artículo 2",
-      "Contenido del artículo 3",
-    ]}
+  <ArticleCard
+    title={bloqueData.titulo}
+    content={filteredContent}
+    infoArticle={infoArticle}
   />
 </Layout>

@@ -1,8 +1,5 @@
 ---
 import "@styles/global.css";
-import { boeResponse, fetchIndexData } from "../utils/apiUtils";
-
-//fetchIndexData();
 ---
 
 <!doctype html>
@@ -17,10 +14,7 @@ import { boeResponse, fetchIndexData } from "../utils/apiUtils";
   </head>
   <body
     class="flex flex-col prose prose-slate lg:prose-xl bg-gray-100 max-w-none min-h-screen">
-    <header class="bg-white p-4 w-full">
-      <h1 class="text-center">Constitución</h1>
-    </header>
-    <main class="flex flex-1">
+    <main class="flex flex-1 p-4 justify-center">
       <slot />
     </main>
     <footer class="p-4 flex justify-center w-full">

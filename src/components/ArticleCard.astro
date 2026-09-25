@@ -4,37 +4,52 @@ import { Icon } from "astro-icon/components";
 interface Props {
   title: string;
   content: string[];
+  infoArticle: { titulo: string; capitulo: string; seccion: string };
 }
-const { title, content }: Props = Astro.props;
+const { title, content, infoArticle }: Props = Astro.props;
 ---
 
 <article
-  class="m-5 flex flex-col justify-between bg-white w-200 rounded-xl shadow-xl">
+  class="flex flex-col justify-between bg-white w-170 h-150 rounded-xl shadow-xl">
   <header class="px-2 border-b-2 border-slate-400">
     <h2 class="text-center">{title}</h2>
   </header>
-  <div class="flex px-2 justify-between items-center h-80">
+  <div class="flex px-2 justify-between items-center">
     <button
       data-prev
       class="bg-slate-800 text-white rounded-full font-bold p-2 hover:scale-105 cursor-pointer">
       <Icon name="mdi:arrow-left" />
     </button>
-    <p data-content={content} class=""></p>
+    <p data-content={JSON.stringify(content)} class="px-4"></p>
     <button
       data-next
       class="bg-slate-800 text-white rounded-full font-bold p-2 hover:scale-105 cursor-pointer">
       <Icon name="mdi:arrow-right" />
     </button>
   </div>
-  <footer class="border-t-2 border-slate-400 flex justify-center gap-2 py-2">
-    <span
-      class="text-center text-sm font-bold bg-yellow-500 rounded-full p-2 text-white"
-      >Capítulo</span
-    >
-    <span
-      class="text-center text-sm font-bold bg-yellow-500 rounded-full p-2 text-white"
-      >Sección</span
-    >
+  <footer
+    class="border-t-2 border-slate-400 flex flex-col justify-center items-center gap-2 py-2">
+    {
+      infoArticle.titulo && (
+        <span class="text-center text-sm  font-bold bg-slate-700 rounded-full p-2 text-white">
+          {infoArticle.titulo}
+        </span>
+      )
+    }
+    {
+      infoArticle.capitulo && (
+        <span class="text-center text-sm font-bold bg-slate-700 rounded-full p-2 text-white">
+          {infoArticle.capitulo}
+        </span>
+      )
+    }
+    {
+      infoArticle.seccion && (
+        <span class="text-center text-sm font-bold bg-slate-700 rounded-full p-2 text-white">
+          {infoArticle.seccion}
+        </span>
+      )
+    }
   </footer>
   <script>
     const paragraph = document.querySelector<HTMLElement>("[data-content]")!;
@@ -42,7 +57,10 @@ const { title, content }: Props = Astro.props;
       document.querySelector<HTMLButtonElement>("[data-prev]")!;
     const nextButton =
       document.querySelector<HTMLButtonElement>("[data-next]")!;
-    const content: string[] = paragraph.dataset.content!.split(",");
+
+    const content = paragraph.dataset.content
+      ? JSON.parse(paragraph.dataset.content)
+      : [];
 
     let index: number = 0;
 
